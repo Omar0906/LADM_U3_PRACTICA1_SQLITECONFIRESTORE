@@ -1,5 +1,6 @@
 package mx.tecnm.tepic.ladm_u3_practica1_sqliteconfirestore
 
+import android.app.Activity
 import android.content.ContentValues
 import android.database.sqlite.SQLiteException
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,7 @@ class MainActivity2 : AppCompatActivity() {
         id = extras!!.getString("idactualizar")!!
         try{
             var transaccion = db.writableDatabase
-            var cursor = transaccion.query("APARTADO", arrayOf("NOMBRECLIENTE","PRODUCTO","PRECIO"),"ID=?",
+            var cursor = transaccion.query("APARTADO", arrayOf("NOMBRECLIENTE","PRODUCTO","PRECIO"),"IDAPARTADO=?",
                 arrayOf(id),null,null,null)
             if(cursor.moveToFirst()) {
                 txtclienteact.setText(cursor.getString(0))
@@ -33,6 +34,7 @@ class MainActivity2 : AppCompatActivity() {
             actualizar()
         }
         btnregresar.setOnClickListener {
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }
@@ -44,9 +46,9 @@ class MainActivity2 : AppCompatActivity() {
             valores.put("NOMBRECLIENTE",txtclienteact.text.toString())
             valores.put("PRODUCTO",txtproductoact.text.toString())
             valores.put("PRECIO",txtprecioact.text.toString().toFloat())
-            var resultado = transaccion.update("APARTADO",valores,"ID=?", arrayOf(id))
+            var resultado = transaccion.update("APARTADO",valores,"IDAPARTADO=?", arrayOf(id))
             if(resultado>0){
-                mensaje("Se actualizó correctamente ${id}")
+                mensaje("Se actualizó correctamente")
             }else{
                 mensaje("ERROR!")
             }
